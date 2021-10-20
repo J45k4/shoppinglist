@@ -16,6 +16,16 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
+  Shoppinglists: undefined
+  Shoppinglist: {
+    shoppinglistId: number
+  };
+  AddNewItem: {
+    shoppinglistId: number
+  }
+  CombineShoppinglist: {
+    shoppinglistId: number
+  }
   NotFound: undefined;
 };
 

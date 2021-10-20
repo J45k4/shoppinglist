@@ -4,8 +4,7 @@
  */
 
 import * as React from 'react';
-import { Text as DefaultText, View as DefaultView } from 'react-native';
-
+import { Pressable, StyleProp, Text as DefaultText, View as DefaultView, ViewStyle } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
@@ -43,4 +42,43 @@ export function View(props: ViewProps) {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export const Button = (props: {
+  title: string,
+  onPress: () => void,
+  style?: {
+    fontSize?: number,
+    width?: number,
+    height?: number,
+    marginLeft?: number,
+    marginRight?: number,
+    paddingTop?: number,
+    paddingBottom?: number,
+    flex?: number
+  }
+}) => {
+  return (
+    <Pressable style={{
+      ...props.style,
+      backgroundColor: "#aadbf6",
+      width: props.style?.width,
+      height: props.style?.height,
+      marginLeft: props.style?.marginLeft,
+      marginRight: props.style?.marginRight,
+      paddingTop: props.style?.paddingTop,
+      paddingBottom: props.style?.paddingBottom,
+      flex: props.style?.flex,
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: "pointer"
+    }} onPress={props.onPress}>
+      <Text style={{
+        color: "black",
+        fontSize: props.style?.fontSize
+      }}>
+        {props.title}
+      </Text>
+    </Pressable>
+  )
 }
