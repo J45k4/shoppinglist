@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
+import { NiceLine } from '../components/nice-line';
 import { ShoppinglistsList } from '../components/shoppinglists-list';
-import { Button, Text, View } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 import { useShoppinglistStore } from '../logic/shoppinglist-repository';
 import { RootTabScreenProps } from '../types';
 
@@ -18,6 +18,7 @@ export const ShoppinglistsScreen = observer(({ navigation }: RootTabScreenProps<
           Shoppinglists
         </Text>
       </View>
+      <NiceLine />
       <View style={styles.mainView}>
       <ShoppinglistsList onShoppinglistClicked={(shoppinglistId) => {
         navigation.navigate("Shoppinglist", {
@@ -26,14 +27,7 @@ export const ShoppinglistsScreen = observer(({ navigation }: RootTabScreenProps<
       }} />
       </View>
       <View style={styles.footerArea}>
-        <Button title="Create shoppinglist" style={{
-          fontSize: 25,
-          marginLeft: 50,
-          marginRight: 50,
-          paddingBottom: 8,
-          paddingTop: 8,
-          flex: 1
-        }} onPress={() => {
+        <Button title="Create shoppinglist" onPress={() => {
           const newShoppinglist = shoppinglistStore.createShoppinglist()
 
           navigation.navigate("Shoppinglist", {
@@ -52,24 +46,21 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: 'bold',
   },
   headerBox: {
-    backgroundColor: "red",
     height: 100,
     alignItems: "center",
     justifyContent: "center"
   },
   footerArea: {
     flexDirection: "row",
-    backgroundColor: "blue",
     height: 70,
     alignItems: "center",
     justifyContent: "center"
   },
   mainView: {
-    backgroundColor: "green",
     flex: 1
   },
   separator: {

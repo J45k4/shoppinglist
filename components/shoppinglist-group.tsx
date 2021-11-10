@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons"
 import { observer } from "mobx-react"
 import * as React from "react"
-import { StyleSheet } from "react-native"
+import { StyleSheet, Pressable } from "react-native"
 import { ShoppinglistItem } from "../logic/shoppinglist"
 import { ShoppinglistRow } from "./shoppinglist-row"
 import { Text, View } from "./Themed"
@@ -10,44 +10,51 @@ export const ShoppinglistGroup = observer((props: {
     groupName: string
     open: boolean
     openChanged: (open: boolean) => void
+    onRemove: (id: number) => void
     items: ShoppinglistItem[]
 }) => {
     return (
         <View style={{
             flexDirection: "column",
             flexGrow: 1,
-            backgroundColor: "#94d6ae"
         }}>
-            <View style={{
+            <Pressable style={{
                 flexDirection: "row",
-                backgroundColor: "#178041"
+            }} onPress={() => {
+                props.openChanged(!props.open)
             }}>
                 <Text style={styles.groupTitle}>
                     {props.groupName}
                 </Text>
                 <FontAwesome name={props.open ? "chevron-up" : "chevron-down"}
                     style={styles.groupExpandingArrow}
-                    onPress={() => {
-                        props.openChanged(!props.open)
-                    }} />
-            </View>
+                     />
+            </Pressable>
             {props.open && props.items.map(p => (
                 <ShoppinglistRow
                     key={p.id}
                     amount={p.amount}
                     name={p.name}
-                    completed={p.completed}
-                    onCompleted={() => {
-                        p.complete()
-                    }}
-                    onUncompleted={() => {
-                        p.uncomplete()
+                    checked={p.completed}
+                    onCheck={(s) => {
+                        if (s) {
+                            p.complete()
+                        } else {
+                            p.uncomplete()
+                        }
                     }}
                     onIncrease={() => {
                         p.increaseAmount()
                     }}
                     onDecrease={() => {
                         p.decreaseAmount()
+
+                        if (p.amount === 0) {
+                            props.onRemove(p.id)
+                        }
+                    }}
+                    onRemove={() => {
+                        props.onRemove(p.id)
                     }}
                 />
             ))}
@@ -62,7 +69,6 @@ const styles = StyleSheet.create({
     },
     groupExpandingArrow: {
         fontSize: 25,
-        color: "white",
         alignContent: "flex-end"
     }
 })

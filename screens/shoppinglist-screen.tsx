@@ -2,6 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Button, TextInput, StyleSheet } from 'react-native';
+import { NiceLine } from '../components/nice-line';
 import { ShoppinglistTable } from '../components/shoppinglist-table';
 
 import { Text, View } from "../components/Themed";
@@ -32,7 +33,7 @@ export const ShoppingListScreen = observer(({ navigation, route: { params: { sho
                         {shoppinglist?.name}
                     </Text>}
                     {editingName && 
-                    <TextInput placeholder="Name" style={styles.titleEditInput} value={shoppinglist?.name} onChangeText={text => {
+                    <TextInput autoFocus={true} placeholder="Name" style={styles.titleEditInput} value={shoppinglist?.name} onChangeText={text => {
                         if (shoppinglist) {
                             shoppinglist.setName(text)
                         }
@@ -44,6 +45,7 @@ export const ShoppingListScreen = observer(({ navigation, route: { params: { sho
                     <FontAwesome name="share-alt" style={styles.shareButton} />
                 </View>
             </View>
+            <NiceLine />
             <View style={styles.main}>
                 {shoppinglist &&
                 <ShoppinglistTable shoppinglist={shoppinglist} />}
@@ -57,7 +59,7 @@ export const ShoppingListScreen = observer(({ navigation, route: { params: { sho
                     }} />
                 </View>
                 <View style={styles.addNewButton}>
-                    <Button title="Add new" onPress={() => {
+                    <Button title="Add item" onPress={() => {
                         navigation.navigate("AddNewItem", {
                             shoppinglistId: shoppinglistId
                         })
@@ -74,47 +76,47 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: "row",
-        backgroundColor: "red"
+        paddingTop: 30,
+        marginBottom: 20
     },
     main: {
         flex: 1,
+        paddingTop: 20,
         paddingLeft: 40,
         paddingRight: 40
     },
     footer: {
-        flexDirection: "row"
+        flexDirection: "row",
+        padding: 20
     },
     backButtonArea: {
         flex: 1, 
-        backgroundColor: "#ab5c69",
         alignItems: "center", 
         justifyContent: "center"
     },
     backButton: {
-        color: "white",
         fontSize: 30
     },
     titleArea: {
         flex: 3,
-        backgroundColor: "#4a2128",
         alignItems: "center",
         justifyContent: "center"
     },
     title: {
-        fontSize: 35
+        fontSize: 25
     },
     titleEditInput: {
-        fontSize: 35,
-        color: "white"
+        fontSize: 25,
+        flex: 1,
+        textAlign: "center",
+        width: "100%"
     },
     shareArea: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#6e0517",
         justifyContent: "center"
     },
     shareButton: {
-        color: "white",
         fontSize: 30
     },
     addNewButton: {

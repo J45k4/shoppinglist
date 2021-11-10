@@ -7,6 +7,8 @@ import { FontAwesome } from "@expo/vector-icons"
 
 const Row = (props: {
     title: string
+    completedItems: number
+    allItems: number
     onPress: () => void
     onRemove: () => void
 }) => {
@@ -18,7 +20,8 @@ const Row = (props: {
             padding: 15
         }}>
             <Text onPress={props.onPress} style={styles.rowText}>
-                {props.title}
+                {props.title + " "}
+                {props.completedItems} / {props.allItems}
             </Text>
             <FontAwesome name="trash" style={styles.removeButton} onPress={props.onRemove} />
         </View>
@@ -33,11 +36,14 @@ export const ShoppinglistsList = observer((props: {
     return (
         <View style={styles.container}>
             {shoppinglistStore.shoppinglists.map(p => (
-                <Row key={p.id} title={p.name} onPress={() => {
-                    props.onShoppinglistClicked(p.id)
-                }} onRemove={() => {
-                    shoppinglistStore.removeShoppinglist(p)
-                }} />
+                <Row key={p.id} title={p.name} 
+                    allItems={p.countItems()} 
+                    completedItems={p.countCompletedItems()} 
+                    onPress={() => {
+                        props.onShoppinglistClicked(p.id)
+                    }} onRemove={() => {
+                        shoppinglistStore.removeShoppinglist(p)
+                    }} />
             ))}
         </View>
     )
@@ -48,11 +54,10 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     rowText: {
-        fontSize: 25
+        fontSize: 20
     },
     removeButton: {
         marginLeft: 5,
         fontSize: 25,
-        color: "white"
     }
 })

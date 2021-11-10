@@ -5,12 +5,13 @@ import { Text, View } from "./Themed"
 
 export const ShoppinglistRow = (props: {
     name: string
-    amount: number
-    completed: boolean
-    onCompleted: () => void
-    onUncompleted: () => void
-    onIncrease: () => void
-    onDecrease: () => void
+    amount?: number
+    checked?: boolean
+    onCheck?: (status: boolean) => void
+    onUnchecked?: () => void
+    onIncrease?: () => void
+    onDecrease?: () => void
+    onRemove?: () => void
 }) => {
     return (
         <View style={{
@@ -19,63 +20,74 @@ export const ShoppinglistRow = (props: {
             height: 50
         }}>
             <View style={styles.leftSide}>
-                {!props.completed &&
-                <FontAwesome name="square" style={styles.checkbox} onPress={() => {
-                    props.onCompleted()
+                {props.checked === false &&
+                <FontAwesome name="square-o" style={styles.checkbox} onPress={() => {
+                    if (props.onCheck) {
+                        props.onCheck(true)
+                    }
                 }} />}
-                {props.completed &&
-                <FontAwesome name="check-square" style={styles.checkbox} onPress={() => {
-                    props.onUncompleted()
+                {props.checked === true &&
+                <FontAwesome name="check-square-o" style={styles.checkbox} onPress={() => {
+                    if (props.onCheck) {
+                        props.onCheck(false)
+                    }
                 }} />}
-                <Text style={{
-                    fontSize: 30
-                }}>
+                <Text style={styles.name}>
                     {props.name}
                 </Text>
             </View>
+            {props.amount != null &&
             <View style={styles.rightSize}>
                 <FontAwesome name="minus" style={styles.minusButton} onPress={props.onDecrease} />
                 <Text style={{
-                    fontSize: 30,
+                    fontSize: 20,
                     margin: 5
                 }}>
                     {props.amount}
                 </Text>
-                <FontAwesome name="plus" style={styles.plusButton} onPress={props.onIncrease} /> 
-            </View>               
+                <FontAwesome name="plus" style={styles.plusButton} onPress={props.onIncrease} />
+
+                {props.onRemove &&
+                <FontAwesome name="trash" style={styles.trashIcon} onPress={props.onRemove} />}
+            </View>}
         </View>
     )
 }
+
+const fontSize = 23
 
 const styles = StyleSheet.create({
     leftSide: {
         flex: 1,
         justifyContent: "flex-start",
         flexDirection: "row",
-        backgroundColor: "#ffe5cc"
     },
     rightSize: {
-        backgroundColor: "#ffba7a",
         justifyContent: "flex-end",
         flexDirection: "row"
     },
+    name: {
+        fontSize: fontSize
+    },
     checkbox: {
-        color: "white",
-        fontSize: 30,
+        fontSize: fontSize,
         marginTop: 8,
         marginRight: 10,
         marginLeft: 10
     },
     minusButton: {
         marginTop: 10,
-        color: "white",
-        fontSize: 30,
+        fontSize: fontSize,
         margin: 5
     },
     plusButton: {
         marginTop: 10,
-        color: "white",
-        fontSize: 30,
+        fontSize: fontSize,
+        margin: 5
+    },
+    trashIcon: {
+        marginTop: 10,
+        fontSize: fontSize,
         margin: 5
     }
 })
